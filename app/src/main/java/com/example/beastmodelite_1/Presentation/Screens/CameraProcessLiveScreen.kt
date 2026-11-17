@@ -218,11 +218,11 @@ fun CameraProcessLiveScreen(viewModel: CameraProcessViewModel= viewModel()) {
 
                     allposes.forEach { singlepose->
                         //for back-camera
-                        val Orginalx=singlepose.position.x*viewModel.scale!!-viewModel.horizontaloffset!!
+                        val Original_x=singlepose.position.x*viewModel.scale!!-viewModel.horizontaloffset!!
                         val x=if(viewModel.cameraselector== CameraSelector.DEFAULT_FRONT_CAMERA){
-                            preview_view.width-Orginalx
+                            preview_view.width-Original_x
                         }else{
-                            Orginalx
+                            Original_x
                         }
                         //used this if stat for front camera case it is used for mirroring
                         val y = singlepose.position.y*viewModel.scale!!-viewModel.verticaloffset!!
