@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -106,7 +107,115 @@ fun CameraProcessLiveScreen(viewModel: CameraProcessViewModel= viewModel()) {
                 Canvas(modifier = Modifier.fillMaxSize(),
                     )
                 {
+
                     val allposes=viewModel.posestored!!.allPoseLandmarks
+                    val leftShoulder = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_SHOULDER)
+                    val rightShoulder = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_SHOULDER)
+                    val leftElbow = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_ELBOW)
+                    val rightElbow = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_ELBOW)
+                    val leftWrist = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_WRIST)
+                    val rightWrist = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_WRIST)
+                    val leftHip = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_HIP)
+                    val rightHip = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_HIP)
+                    val leftKnee = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_KNEE)
+                    val rightKnee = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_KNEE)
+                    val leftAnkle = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_ANKLE)
+                    val rightAnkle = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_ANKLE)
+                    val leftPinky = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_PINKY)
+                    val rightPinky = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_PINKY)
+                    val leftIndex = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_INDEX)
+                    val rightIndex = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_INDEX)
+                    val leftThumb = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_THUMB)
+                    val rightThumb = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_THUMB)
+                    val leftHeel = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_HEEL)
+                    val rightHeel = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_HEEL)
+                    val leftFootIndex = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_FOOT_INDEX)
+                    val rightFootIndex = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_FOOT_INDEX)
+                    val nose = viewModel.posestored!!.getPoseLandmark(PoseLandmark.NOSE)
+                    val leftEyeInner = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_EYE_INNER)
+                    val leftEye = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_EYE)
+                    val leftEyeOuter = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_EYE_OUTER)
+                    val rightEyeInner = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_EYE_INNER)
+                    val rightEye = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_EYE)
+                    val rightEyeOuter = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_EYE_OUTER)
+                    val leftEar = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_EAR)
+                    val rightEar = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_EAR)
+                    val leftMouth = viewModel.posestored!!.getPoseLandmark(PoseLandmark.LEFT_MOUTH)
+                    val rightMouth = viewModel.posestored!!.getPoseLandmark(PoseLandmark.RIGHT_MOUTH)
+
+                    fun GetUpdatedXvalue(value:Float):Float{
+                        if(viewModel.cameraselector== CameraSelector.DEFAULT_FRONT_CAMERA){
+                            val x=value*viewModel.scale!!-viewModel.horizontaloffset!!
+                            return preview_view.width-x
+                        }
+                        return value*viewModel.scale!!-viewModel.horizontaloffset!!
+                    }
+
+                    fun GetUpdatedYvalue(value: Float): Float{
+                        return value*viewModel.scale!!-viewModel.verticaloffset!!
+                    }
+
+                    fun DrawBone(pose1: PoseLandmark?,pose2: PoseLandmark?){
+                        if(pose1!=null &&pose2!=null){
+                            val x1=GetUpdatedXvalue(pose1.position.x)
+                            val x2=GetUpdatedXvalue(pose2.position.x)
+                            val y1=GetUpdatedYvalue(pose1.position.y)
+                            val y2=GetUpdatedYvalue(pose2.position.y)
+                            drawLine(
+                                color = Color.Red,
+                                strokeWidth = 10f,
+                                start=Offset(x1,y1),
+                                end = Offset(x2,y2)
+                            )
+                        }
+                    }
+
+                    DrawBone(leftEyeInner, leftEye)
+                    DrawBone(leftEye, leftEyeOuter)
+
+                    DrawBone(rightEyeInner, rightEye)
+                    DrawBone(rightEye, rightEyeOuter)
+
+                    DrawBone(leftEye, nose)
+                    DrawBone(nose, rightEye)
+
+                    DrawBone(leftEyeOuter, leftEar)
+                    DrawBone(rightEyeOuter, rightEar)
+
+                    DrawBone(nose, leftMouth)
+                    DrawBone(leftMouth, rightMouth)
+                    DrawBone(rightMouth, nose)
+
+                    DrawBone(leftShoulder, rightShoulder)
+
+                    DrawBone(leftShoulder, leftHip)
+                    DrawBone(rightShoulder, rightHip)
+                    DrawBone(leftHip, rightHip)
+
+                    DrawBone(leftShoulder, leftElbow)
+                    DrawBone(leftElbow, leftWrist)
+
+                    DrawBone(leftWrist, leftThumb)
+                    DrawBone(leftWrist, leftIndex)
+                    DrawBone(leftWrist, leftPinky)
+
+                    DrawBone(rightShoulder, rightElbow)
+                    DrawBone(rightElbow, rightWrist)
+
+                    DrawBone(rightWrist, rightThumb)
+                    DrawBone(rightWrist, rightIndex)
+                    DrawBone(rightWrist, rightPinky)
+
+                    DrawBone(leftHip, leftKnee)
+                    DrawBone(leftKnee, leftAnkle)
+                    DrawBone(leftAnkle, leftHeel)
+                    DrawBone(leftHeel, leftFootIndex)
+
+                    DrawBone(rightHip, rightKnee)
+                    DrawBone(rightKnee, rightAnkle)
+                    DrawBone(rightAnkle, rightHeel)
+                    DrawBone(rightHeel, rightFootIndex)
+
                     allposes.forEach { singlepose->
                         //for back-camera
                         val Orginalx=singlepose.position.x*viewModel.scale!!-viewModel.horizontaloffset!!
@@ -119,7 +228,7 @@ fun CameraProcessLiveScreen(viewModel: CameraProcessViewModel= viewModel()) {
                         val y = singlepose.position.y*viewModel.scale!!-viewModel.verticaloffset!!
                         drawCircle(
                             color=Color.Green,
-                            radius = 7f,
+                            radius = 8f,
                             center = Offset(x,y)
                         )
                     }
