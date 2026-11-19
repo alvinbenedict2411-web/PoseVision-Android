@@ -252,9 +252,9 @@ fun CameraProcessLiveScreen(viewModel: CameraProcessViewModel= viewModel()) {
                     )
                     val scale_width=width*scale
                     val scale_height=height*scale
-                    val verticaloffset=(scale_height-preview_view.height)/2f
-                    val horizontaloffset=(scale_width-preview_view.width)/2f
-                    viewModel.updatevalues(scale,horizontaloffset,verticaloffset)
+                    val vertical_offset=(scale_height-preview_view.height)/2f
+                    val horizontal_offset=(scale_width-preview_view.width)/2f
+                    viewModel.updatevalues(scale,horizontal_offset,vertical_offset)
                     viewModel.updatepose(pose)
                 }.addOnFailureListener {
                     println(it)
